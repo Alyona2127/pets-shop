@@ -89,24 +89,36 @@ const items = [
 const itemTemplate = document.querySelector('#item-template');
 const container = document.querySelector('#shop-items');
 
-function addItems(newItems) {
+function renderItems(newItems) {
   newItems.forEach((item) => {
     const element = itemTemplate.content.cloneNode(true);
+    
     const elementTitle = element.querySelector('h1');
     elementTitle.textContent = item.title;
+    
     const elementDescription = element.querySelector('p');
     elementDescription.textContent = item.description;
+    
     const elementImg = element.querySelector('img');
     elementImg.src = item.img;
+    
     const elementPrice = element.querySelector('.price');
     elementPrice.textContent = item.price;
+    
     const elementTags = element.querySelector('.tags');
-    elementTags.textContent = item.tags;
+
+    item.tags.forEach(tag => {
+      const span = document.createElement('span');
+      span.classList.add('tag');
+      span.textContent = tag;
+      elementTags.append(span);
+    });
+    
     container.append(element);
   });
 }
 
-addItems(items);
+renderItems(items);
 
 const button = document.querySelector('#search-btn');
 const searchInput = document.querySelector('#search-input');
@@ -122,7 +134,7 @@ button.addEventListener('click', function() {
   
   if (filteredItems.length > 0) {
     container.innerHTML = '';
-    addItems(filteredItems);  
+    renderItems(filteredItems);  
   } else {
     container.innerHTML = '';
     text.textContent = 'Ничего не найдено';
